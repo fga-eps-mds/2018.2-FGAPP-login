@@ -29,4 +29,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',views.singIn),
     url(r'^postsign/',views.postsign),
+    url(r'^signup/',views.signUp,name='signup'),
+    url(r'^postsignup/',views.postsignup,name='postsignup'),
+
 ]
