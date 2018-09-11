@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls import url
+from django.conf.urls import url, include
 from . import views
 
 # from rest_framework import routers
@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',views.singIn),
     url(r'^postsign/',views.postsign),
+    url(r'^', include('accounts.urls')),
 ]
