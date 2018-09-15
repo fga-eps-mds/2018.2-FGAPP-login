@@ -35,18 +35,17 @@ auth = firebase.auth()
 def signUp(request):
     email = request.data.get("email")
     password = request.data.get("password")
-    if email is None or password is None:
+    if email is '' or password is '':
         return Response({'error': 'Os campos não podem estar vazios'},
                         status=HTTP_400_BAD_REQUEST)
-    if len(password)<6 or len(password)>15:
+    elif len(password)<6 or len(password)>15:
         return Response({'error': 'A senha deve conter de 6 a 15 caracteres'},
             status=HTTP_400_BAD_REQUEST)
     try:
         user=auth.create_user_with_email_and_password(email,password)
     except:
-        return Response({'error': 'Unable to create account try again'},
+        return Response({'error': 'Não foi possível criar a conta'},
                             status=HTTP_404_NOT_FOUND)
-    #user = authenticate(username=username, password=password)
     session_id = user['idToken']
     return Response({'token': session_id},
                     status=HTTP_200_OK)
