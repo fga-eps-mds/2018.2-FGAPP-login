@@ -21,24 +21,11 @@ from .views import signUp
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework_jwt.views import refresh_jwt_token
 from rest_framework_jwt.views import verify_jwt_token
-# from rest_framework import routers
-# from authentication.views import UserViewSet
-
-# router = routers.DefaultRouter()
-# router.register(r'users', UserViewSet, base_name='users')
-# urlpatterns = router.urls
 
 urlpatterns = [
     #'',
     url(r'^admin/', admin.site.urls),
-    url(r'^$',views.singIn),
-    url(r'^postsign/',views.postsign),
-    url(r'^', include('accounts.urls')),
-    url(r'^signup/',views.signUp,name='signup'),
-    url(r'^postsignup/',views.postsignup,name='postsignup'),
     url(r'^api-token-auth/', obtain_jwt_token),
-    url(r'^api-token-refresh/', refresh_jwt_token),
-    url(r'^api-token-verify/', verify_jwt_token),
     path('api/signup', signUp),
 
 ]
