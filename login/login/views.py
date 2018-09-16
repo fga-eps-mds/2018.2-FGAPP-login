@@ -49,3 +49,25 @@ def signUp(request):
     session_id = user['idToken']
     return Response({'token': session_id},
                     status=HTTP_200_OK)
+
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+
+def signIn(request):
+    email = request.data.get("email")
+    password = request.data.get("password")
+    if email is '' or password is '':
+        return Response({'error': 'Os campos não podem estar vazios'},
+                        status=HTTP_400_BAD_REQUEST)
+    elif len(password)<6 or len(password)>15:
+        return Response({'error': 'A senha deve conter de 6 a 15 caracteres'},
+            status=HTTP_400_BAD_REQUEST)
+    try:
+        user=auth.sign_in_with_email_and_password(email,password)
+    except:
+        return Response({'error': 'Credenciais incorretas.'},
+                            status=HTTP_404_NOT_FOUND)
+    session_id = user['idToken']
+    return Response({'token': session_id},
+                    status=HTTP_200_OK)

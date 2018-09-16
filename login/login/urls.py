@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url, include
 from . import views
-from .views import signUp
+from .views import signUp, signIn
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework_jwt.views import refresh_jwt_token
 from rest_framework_jwt.views import verify_jwt_token
@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api-token-auth/', obtain_jwt_token),
     path('api/signup', signUp),
+    path('api/signin', signIn),
 
 ]
