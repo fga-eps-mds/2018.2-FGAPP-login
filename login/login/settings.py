@@ -110,6 +110,7 @@ JWT_AUTH = {
 
     'JWT_ALLOW_REFRESH': True,
     'JWT_VERIFY': True,
+    'JWT_VERIFY_EXPIRATION': False,
 }
 
 # Password validation
