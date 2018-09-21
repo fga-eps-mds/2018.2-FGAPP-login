@@ -25,6 +25,8 @@ SECRET_KEY = '9_bjt+3r7c7&*^3)0jnga)b5f!8-)0+^j$bu-!bjlrcp2j$%(%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+REST_USE_JWT = True
+
 ALLOWED_HOSTS = ["*"]
 
 
