@@ -1,3 +1,3 @@
 sh run-tests.sh
-cd product_microservice
+cd login
 coverage html -i
