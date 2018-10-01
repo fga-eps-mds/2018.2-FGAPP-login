@@ -1,0 +1,29 @@
+
+language: python
+python:
+  - "3.4"
+
+cache: pip
+
+install: 
+  - pip install -r login/requirements/dev.txt
+
+virtualenv:
+  system_site_packages: true
+
+stages:
+  - test
+  - name: test-coverage
+    if: branch = master
+
+jobs:
+  include:
+    - stage: "Tests"
+      name: "Unit Tests"
+      script: sh run-tests.sh
+    
+    - stage: test-coverage
+      name: "Updating test coverage"
+      script:
+        - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sh run-tests.sh; fi'
+        - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then cd login && codecov -t ${CODECOV_TOKEN}; fi'
