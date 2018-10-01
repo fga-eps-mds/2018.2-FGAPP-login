@@ -1,6 +1,5 @@
 Django==2.0.5
 djangorestframework==3.8.2
-coverage==4.5.1
 djangorestframework-jwt==1.11.0
 django-rest-auth==0.9.3
 django-allauth==0.37.1

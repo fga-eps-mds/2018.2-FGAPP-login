@@ -1,3 +1,4 @@
+pip install -r requirements.txt
 cd login
 python manage.py makemigrations
 python manage.py migrate
