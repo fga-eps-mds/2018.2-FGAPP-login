@@ -51,6 +51,45 @@ class CheckProductAPITest(APITestCase):
         self.assertEqual(response_9.status_code, 400)
 
     def test_create_user(self):
-        email_lowercase = 'normal@normal.com'
-        user = CustomUser.objects._create_user(email_lowercase, 'teste123')
-        self.assertEqual(user.email, email_lowercase)
+        email_1 = 'normal@normal.com'
+        user_1 = CustomUser.objects._create_user(email_1, 'teste123')
+        self.assertEqual(user_1.email, email_1)
+
+        email_2 = None
+        try:
+            user_2 = CustomUser.objects._create_user(email_2, 'teste123')
+        except:
+            self.assertEqual(email_2, None)
+
+    def test_create_superuser(self):
+        email_1 = 'normal1@normal.com'
+        user_1 = CustomUser.objects.create_superuser(email_1, 'teste123')
+        self.assertEqual(user_1.email, email_1)
+
+        email_2 = 'normal2@normal.com'
+        try:
+            user_2 = CustomUser.objects.create_superuser(email_2, 'teste123', is_staff = False)
+        except:
+            self.assertEqual(email_2, 'normal2@normal.com')
+
+        email_3 = 'normal3@normal.com'
+        try:
+            user_3 = CustomUser.objects.create_superuser(email_3, 'teste123', is_superuser = False)
+        except:
+            self.assertEqual(email_3, 'normal3@normal.com')
+
+    def test_customUser_methods(self):
+        email_1 = 'teste1@teste.com'
+        user_1 = CustomUser.objects.create_superuser(email_1, 'teste123')
+        response_1 = CustomUser.__str__(user_1)
+        self.assertEqual(response_1, email_1)
+
+        email_2 = 'teste2@teste.com'
+        user_2 = CustomUser.objects.create_superuser(email_2, 'teste123')
+        response_2 = CustomUser.get_full_name(user_2)
+        self.assertEqual(response_2, email_2)
+
+        email_3 = 'teste3@teste.com'
+        user_3 = CustomUser.objects.create_superuser(email_3, 'teste123')
+        response_3 = CustomUser.get_short_name(user_3)
+        self.assertEqual(response_3, email_3)
