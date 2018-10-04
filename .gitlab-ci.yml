@@ -24,18 +24,6 @@ publish codecov:
     - sh run-tests.sh
     - cd login && codecov -t ${CODECOV_TOKEN}
 
-# github pages
-publish pages:
-  image: docker:stable
-  services:
-    - docker:dind
-    - docker:python:3
-  only:
-    - master
-  stage: publish
-  script:
-    - sh run-publish-pages.sh
-
 publish image to production:
   image: docker:stable
   services:
