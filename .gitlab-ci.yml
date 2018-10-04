@@ -1,16 +1,69 @@
-image: docker:stable
+stages:
+  - test
+  - publish
+  - deploy
 
-services:
-  - docker:dind
-  - docker:python:3
+unit tests:
+  image: python:3
+  before_script:
+    - pip install -r login/requirements/dev.txt
+  stage: test
+  script:
+    - sh run-tests.sh
 
-before_script:
-  - docker info
-
-publish:
+publish codecov:
+  image: python:3
+  before_script:
+    - pip install -r login/requirements/dev.txt
   only:
     - master
-    - merge-requests
-  stage: build
+  stage: publish
+  dependencies:
+    - unit tests
   script:
-    - sh run-publish-docker.sh
+    - sh run-tests.sh
+    - cd login && codecov -t ${CODECOV_TOKEN}
+
+publish image to production:
+  image: docker:stable
+  services:
+    - docker:dind
+    - docker:python:3
+  before_script:
+    - docker info
+  only:
+    - tags
+  stage: publish
+  script:
+    - sh run-publish-docker.sh production
+
+publish image to staging:
+  image: docker:stable
+  services:
+    - docker:dind
+    - docker:python:3
+  before_script:
+    - docker info
+  only:
+    - dev
+  stage: publish
+  script:
+    - sh run-publish-docker.sh staging
+
+deploy to production:
+  image: python:3
+  only:
+    - tags
+  stage: deploy
+  script:
+    - sh install-kubectl.sh
+    - sh run-deploy.sh production
+
+deploy to staging:
+  image: python:3
+  only:
+    - dev
+  stage: deploy
+  script:
+    - sh install-kubectl.sh
+    - sh run-deploy.sh staging
