@@ -1,4 +1,4 @@
-from product_microservice.settings.common import *
+from login.settings.common import *
 
 SECRET_KEY = '9_bjt+3r7c7&*^3)0jnga)b5f!8-)0+^j$bu-!bjlrcp2j$%(%'
 
