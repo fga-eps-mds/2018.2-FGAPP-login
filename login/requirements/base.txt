@@ -4,3 +4,4 @@ djangorestframework-jwt==1.11.0
 django-rest-auth==0.9.3
 django-allauth==0.37.1
 psycopg2==2.7.5
+python-decouple==3.1
