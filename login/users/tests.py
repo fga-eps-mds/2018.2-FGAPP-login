@@ -87,7 +87,7 @@ class CheckProductAPITest(APITestCase):
         email_2 = 'teste2@teste.com'
         user_2 = CustomUser.objects.create_superuser(email_2, 'teste123')
         response_2 = CustomUser.get_full_name(user_2)
-        self.assertEqual(response_2, email_2)
+        self.assertEqual(response_2, '')
 
         email_3 = 'teste3@teste.com'
         user_3 = CustomUser.objects.create_superuser(email_3, 'teste123')

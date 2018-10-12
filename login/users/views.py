@@ -25,7 +25,7 @@ def get_name(request):
         return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
 
     try:
-        user = models.CustomUser.objects.get(pk = user_id)
+        user = models.CustomUser.objects.get(id = user_id)
         name = user.get_full_name()
         return Response(data={'name': name}, status=HTTP_200_OK)
     except:
