@@ -1,9 +1,11 @@
 from django.test import TestCase
 from .models import CustomUser
 from rest_framework.test import APITestCase
+from .views import get_name
+from . import models
 
  # Create your tests here.
-class CheckProductAPITest(APITestCase):
+class CheckuserAPITest(APITestCase):
     def test_register_user(self):
         # OK is can create
         request_1 = {'password1':'asd123asd123', 'password2':'asd123asd123', 'email': 'teste1@teste.com'}
@@ -93,3 +95,23 @@ class CheckProductAPITest(APITestCase):
         user_3 = CustomUser.objects.create_superuser(email_3, 'teste123')
         response_3 = CustomUser.get_short_name(user_3)
         self.assertEqual(response_3, email_3)
+
+class CheckUserAPIViewsTest(APITestCase):
+    def test_get_name(self):
+        user = {'password1':'asd123asd123', 'password2':'asd123asd123', 'email': 'teste1@teste.com'}
+        self.client.post('/api/registration/', user)
+
+        # OK if user exists
+        request_1 = {'user_id': '1'}
+        response_1 = self.client.post('/api/users/get_name/', request_1)
+        self.assertEqual(response_1.status_code, 200)
+
+        # BAD_REQUEST if no user_id in request
+        request_2 = {}
+        response_2 = self.client.post('/api/users/get_name/', request_2)
+        self.assertEqual(response_2.status_code, 400)
+
+        # BAD_REQUEST if user don't exist
+        request_3 = {'user_id': '4'}
+        response_3 = self.client.post('/api/users/get_name/', request_3)
+        self.assertEqual(response_3.status_code, 400)
