@@ -69,6 +69,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def set_full_name(self, name):
         self.first_name = name
+        self.save()
 
     def set_email(self, email):
         self.email = email
+        self.username = email
+        self.save()
