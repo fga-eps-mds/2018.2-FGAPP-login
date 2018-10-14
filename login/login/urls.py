@@ -17,8 +17,11 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
 ]
 
-site = Site.objects.get(id=1)
-site.name = LOGIN_DEFAULT_DOMAIN
-site.domain = LOGIN_DEFAULT_DOMAIN
-site.save()
-current_domain = LOGIN_DEFAULT_DOMAIN
+try:
+    site = Site.objects.get(id=1)
+    site.name = LOGIN_DEFAULT_DOMAIN
+    site.domain = LOGIN_DEFAULT_DOMAIN
+    site.save()
+    current_domain = LOGIN_DEFAULT_DOMAIN
+except:
+    print('please re-run the server')
