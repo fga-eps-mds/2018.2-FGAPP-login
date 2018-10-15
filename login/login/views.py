@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .file_helper import file_get_contents
 
 @api_view(['GET'])
 def status(request):

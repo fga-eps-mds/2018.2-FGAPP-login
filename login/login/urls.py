@@ -7,7 +7,7 @@ from rest_framework_jwt.views import verify_jwt_token
 from django.contrib.auth import views as auth_views
 from django.contrib.sites.models import Site
 from login.settings.development import LOGIN_DEFAULT_DOMAIN
-from .version_helper import status
+from .views import status
 
 urlpatterns = [
     path('', status),
