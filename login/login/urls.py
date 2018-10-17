@@ -9,10 +9,12 @@ from django.contrib.sites.models import Site
 from login.settings.development import LOGIN_DEFAULT_DOMAIN
 from .views import status
 
+
 urlpatterns = [
     path('', status),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+    path('api/', include('users.urls')),
     url(r'^api/auth-token/', obtain_jwt_token),
     url(r'^api/token-refresh/', refresh_jwt_token),
     url(r'^api/token-verify/', verify_jwt_token),

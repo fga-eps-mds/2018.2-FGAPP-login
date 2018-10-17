@@ -1,5 +1,4 @@
 from rest_framework import generics
-
 from . import models
 from . import serializers
 
@@ -13,6 +12,7 @@ from rest_framework.status import (
 )
 
 import requests
+from django.core.validators import validate_email
 
 class UserListView(generics.ListCreateAPIView):
     queryset = models.CustomUser.objects.all()
@@ -49,12 +49,18 @@ def set_name(request):
 def update_email(request):
     email = request.data.get('email')
     user_id = request.data.get('user_id')
+
+    try:
+        validate_email(email)
+    except:
+        return Response({'error': 'Email inválido.'}, status=HTTP_400_BAD_REQUEST)
+
     if(user_id == None):
-        return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
+        return Response({'error':'Falha na requisição.'}, status=HTTP_400_BAD_REQUEST)
 
     try:
         user = models.CustomUser.objects.get(id = user_id)
         user.set_email(email)
-        return Response(status=HTTP_200_OK)
+        return Response(data={''}, status=HTTP_200_OK)
     except:
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
