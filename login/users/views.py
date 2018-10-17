@@ -41,7 +41,7 @@ def set_name(request):
     try:
         user = models.CustomUser.objects.get(id = user_id)
         user.set_full_name(first_name)
-        return Response(status=HTTP_200_OK)
+        return Response(data={''} , status=HTTP_200_OK)
     except:
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
 
@@ -61,6 +61,7 @@ def update_email(request):
     try:
         user = models.CustomUser.objects.get(id = user_id)
         user.set_email(email)
-        return Response(data={''}, status=HTTP_200_OK)
+        user_email=user.get_email()
+        return Response(data={'email': email}, status=HTTP_200_OK)
     except:
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)

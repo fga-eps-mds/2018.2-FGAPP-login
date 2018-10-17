@@ -93,7 +93,7 @@ class CheckuserAPITest(APITestCase):
 
         email_3 = 'teste3@teste.com'
         user_3 = CustomUser.objects.create_superuser(email_3, 'teste123')
-        response_3 = CustomUser.get_short_name(user_3)
+        response_3 = CustomUser.get_email(user_3)
         self.assertEqual(response_3, email_3)
 
 class CheckUserAPIViewsTest(APITestCase):
@@ -115,3 +115,52 @@ class CheckUserAPIViewsTest(APITestCase):
         request_3 = {'user_id': '4'}
         response_3 = self.client.post('/api/users/get_name/', request_3)
         self.assertEqual(response_3.status_code, 400)
+
+    def test_set_name(self):
+        user = {'password1':'asd123asd123', 'password2':'asd123asd123', 'email': 'teste1@teste.com'}
+        self.client.post('/api/registration/', user)
+
+        # OK if user exists
+        request_1 = {'user_id': '1', 'first_name': 'Test Name'}
+        response_1 = self.client.post('/api/users/set_name/', request_1)
+        self.assertEqual(response_1.status_code, 200)
+
+        # BAD_REQUEST if no user_id in request
+        request_2 = {}
+        response_2 = self.client.post('/api/users/set_name/', request_2)
+        self.assertEqual(response_2.status_code, 400)
+        self.assertEqual(response_2.json(), {'error':'Falha na requisição.'})
+
+        # BAD_REQUEST if user don't exist
+        request_3 = {'user_id': '4'}
+        response_3 = self.client.post('/api/users/set_name/', request_3)
+        self.assertEqual(response_3.status_code, 400)
+        self.assertEqual(response_3.json(), {'error': 'Usuário não existe.'})
+
+    def test_update_email(self):
+        user = {'password1':'asd123asd123', 'password2':'asd123asd123', 'email': 'teste1@teste.com'}
+        self.client.post('/api/registration/', user)
+
+        # OK if sucess
+        request_1 = {'user_id': '1', 'email': 'email@email.com'}
+        response_1 = self.client.post('/api/users/update_email/', request_1)
+        self.assertEqual(response_1.status_code, 200)
+        self.assertEqual(response_1.json(), {'email': 'email@email.com'})
+
+        # BAD_REQUEST if no user_id in request
+        request_2 = {'email': 'email@email.com'}
+        response_2 = self.client.post('/api/users/update_email/', request_2)
+        self.assertEqual(response_2.status_code, 400)
+        self.assertEqual(response_2.json(), {'error':'Falha na requisição.'})
+
+        # BAD_REQUEST invalid email
+        request_3 = {'user_id': '1', 'email': 'email@email'}
+        response_3 = self.client.post('/api/users/update_email/', request_3)
+        self.assertEqual(response_3.status_code, 400)
+        self.assertEqual(response_3.json(), {'error': 'Email inválido.'})
+
+        # BAD_REQUEST if user don't exist
+        request_4 = {'user_id': '4', 'email': 'email@email.com'}
+        response_4 = self.client.post('/api/users/update_email/', request_4)
+        self.assertEqual(response_4.status_code, 400)
+        self.assertEqual(response_4.json(), {'error': 'Usuário não existe.'})
