@@ -41,7 +41,8 @@ def set_name(request):
     try:
         user = models.CustomUser.objects.get(id = user_id)
         user.set_full_name(first_name)
-        return Response(data={''} , status=HTTP_200_OK)
+        user_name = user.get_full_name()
+        return Response(data={'name': user_name} , status=HTTP_200_OK)
     except:
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
 

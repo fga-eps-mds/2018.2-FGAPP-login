@@ -124,6 +124,7 @@ class CheckUserAPIViewsTest(APITestCase):
         request_1 = {'user_id': '1', 'first_name': 'Test Name'}
         response_1 = self.client.post('/api/users/set_name/', request_1)
         self.assertEqual(response_1.status_code, 200)
+        self.assertEqual(response_1.json(), {'name':'Test Name'})
 
         # BAD_REQUEST if no user_id in request
         request_2 = {}
