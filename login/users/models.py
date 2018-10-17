@@ -64,7 +64,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return self.first_name
 
-    def get_short_name(self):
+    def get_email(self):
         return self.email
 
     def set_full_name(self, name):
