@@ -72,3 +72,27 @@ def update_profile(request):
 
     return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
 
+@api_view(["POST"])
+def get_profile(request):
+    user_id = request.data.get('user_id')
+
+    # Bad request if user_id is not defined
+    if(user_id == None):
+        return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
+    
+    # Request user and profile according to user_id
+    try:
+        user = models.CustomUser.objects.get(id = user_id)
+        profile = models.Profile.objects.get(user = user_id)
+    except:
+        return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
+
+    # Get email, name, photo from a certain user/profile
+    try:
+        user_email=user.get_email()
+        profile_name = profile.get_name()
+        profile_photo = profile.get_photo()
+    except:
+        return Response({'error': 'Erro inesperado.'}, status=HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)    
