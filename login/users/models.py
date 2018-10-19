@@ -15,6 +15,8 @@ class MyUserManager(BaseUserManager):
         """
         Creates and saves a User with the given email and password.
         """
+        print('email')
+        print(email)
         if not email:
             raise ValueError('The Email must be set')
         email = self.normalize_email(email)
@@ -27,7 +29,6 @@ class MyUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
@@ -75,3 +76,22 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         self.email = email
         self.username = email
         self.save()
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True,)
+    name = models.CharField(max_length=30, blank=True)
+    photo = models.CharField(max_length=300, blank=True)
+
+    def get_name(self):
+        return self.first_name
+
+    def set_name(self, name):
+        self.name = name
+        self.save()
+
+    def get_photo(self):
+        return self.photo
+
+    def set_photo(self, photo):
+        self.photo = photo
+        self.save
