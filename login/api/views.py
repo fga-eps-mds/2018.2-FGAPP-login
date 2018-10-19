@@ -30,6 +30,7 @@ from rest_auth.registration.serializers import (VerifyEmailSerializer,
 from rest_auth.utils import jwt_encode
 from rest_auth.views import LoginView
 from rest_auth.registration.app_settings import RegisterSerializer, register_permission_classes
+from users.models import Profile
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters('password1', 'password2')
@@ -63,6 +64,8 @@ class RegisterView(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = self.perform_create(serializer)
+        profile = Profile(user=user, name='', photo='')
+        profile.save()
         headers = self.get_success_headers(serializer.data)
 
         return Response(self.get_response_data(user),

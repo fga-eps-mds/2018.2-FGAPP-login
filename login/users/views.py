@@ -18,6 +18,10 @@ class UserListView(generics.ListCreateAPIView):
     queryset = models.CustomUser.objects.all()
     serializer_class = serializers.UserSerializer
 
+class ProfileListView(generics.ListCreateAPIView):
+    queryset = models.Profile.objects.all()
+    serializer_class = serializers.ProfileSerializer
+
 @api_view(["POST"])
 def get_name(request):
     user_id = request.data.get('user_id')
