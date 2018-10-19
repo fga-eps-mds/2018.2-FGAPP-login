@@ -27,26 +27,25 @@ def get_name(request):
     user_id = request.data.get('user_id')
     if(user_id == None):
         return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
-
     try:
-        user = models.CustomUser.objects.get(id = user_id)
-        name = user.get_full_name()
+        profile = models.Profile.objects.get(user = user_id)
+        name = profile.get_name()
         return Response(data={'name': name}, status=HTTP_200_OK)
     except:
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
 
 @api_view(["POST"])
 def set_name(request):
-    first_name = request.data.get('first_name')
+    name = request.data.get('name')
     user_id = request.data.get('user_id')
     if(user_id == None):
         return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
 
     try:
-        user = models.CustomUser.objects.get(id = user_id)
-        user.set_full_name(first_name)
-        user_name = user.get_full_name()
-        return Response(data={'name': user_name} , status=HTTP_200_OK)
+        profile = models.Profile.objects.get(user = user_id)
+        profile.set_name(name)
+        profile_name = profile.get_name()
+        return Response(data={'name': profile_name} , status=HTTP_200_OK)
     except:
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
 

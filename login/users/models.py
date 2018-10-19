@@ -15,8 +15,6 @@ class MyUserManager(BaseUserManager):
         """
         Creates and saves a User with the given email and password.
         """
-        print('email')
-        print(email)
         if not email:
             raise ValueError('The Email must be set')
         email = self.normalize_email(email)
@@ -83,7 +81,7 @@ class Profile(models.Model):
     photo = models.CharField(max_length=300, blank=True)
 
     def get_name(self):
-        return self.first_name
+        return self.name
 
     def set_name(self, name):
         self.name = name
