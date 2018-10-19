@@ -9,6 +9,7 @@ from rest_framework.status import (
     HTTP_200_OK,
     HTTP_404_NOT_FOUND,
     HTTP_400_BAD_REQUEST,
+    HTTP_500_INTERNAL_SERVER_ERROR
 )
 
 import requests
@@ -35,37 +36,39 @@ def get_name(request):
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
 
 @api_view(["POST"])
-def set_name(request):
-    name = request.data.get('name')
+def update_profile(request):
     user_id = request.data.get('user_id')
-    if(user_id == None):
+    name = request.data.get('name')
+    email = request.data.get('email')
+    photo = request.data.get('photo')
+
+    if(user_id == None or name == None or photo == None):
         return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
 
-    try:
-        profile = models.Profile.objects.get(user = user_id)
-        profile.set_name(name)
-        profile_name = profile.get_name()
-        return Response(data={'name': profile_name} , status=HTTP_200_OK)
-    except:
-        return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
-
-@api_view(["POST"])
-def update_email(request):
-    email = request.data.get('email')
-    user_id = request.data.get('user_id')
-
+    # verify email validation
     try:
         validate_email(email)
     except:
         return Response({'error': 'Email inválido.'}, status=HTTP_400_BAD_REQUEST)
 
-    if(user_id == None):
-        return Response({'error':'Falha na requisição.'}, status=HTTP_400_BAD_REQUEST)
-
+    # Retrieve user and profile data from database
     try:
         user = models.CustomUser.objects.get(id = user_id)
-        user.set_email(email)
-        user_email=user.get_email()
-        return Response(data={'email': email}, status=HTTP_200_OK)
+        profile = models.Profile.objects.get(user = user_id)
     except:
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
+    
+    # Set new name, email and photo
+    try:
+        user.set_email(email)
+        profile.set_name(name)
+        profile.set_photo(photo)
+
+        user_email=user.get_email()
+        profile_name = profile.get_name()
+        profile_photo = profile.get_photo()
+    except:
+        return Response({'error': 'Erro inesperado.'}, status=HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
+

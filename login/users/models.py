@@ -92,4 +92,4 @@ class Profile(models.Model):
 
     def set_photo(self, photo):
         self.photo = photo
-        self.save
+        self.save()
