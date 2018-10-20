@@ -60,15 +60,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-    def get_full_name(self):
-        return self.first_name
-
     def get_email(self):
         return self.email
-
-    def set_full_name(self, name):
-        self.first_name = name
-        self.save()
 
     def set_email(self, email):
         self.email = email

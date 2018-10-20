@@ -61,16 +61,18 @@ def update_profile(request):
     # Set new name, email and photo
     try:
         user.set_email(email)
-        profile.set_name(name)
-        profile.set_photo(photo)
-
-        user_email=user.get_email()
-        profile_name = profile.get_name()
-        profile_photo = profile.get_photo()
-
-        return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
     except:
-        return Response({'error': 'Erro inesperado.'}, status=HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'error': 'Endereço de email já cadastrado'}, status=HTTP_400_BAD_REQUEST)
+
+    profile.set_name(name)
+    profile.set_photo(photo)
+
+    user_email=user.get_email()
+    profile_name = profile.get_name()
+    profile_photo = profile.get_photo()
+
+    return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
+
 
     
 
@@ -90,11 +92,9 @@ def get_profile(request):
         return Response({'error': 'Usuário inválido.'}, status=HTTP_400_BAD_REQUEST)
 
     # Get email, name, photo from a certain user/profile
-    try:
-        user_email=user.get_email()
-        profile_name = profile.get_name()
-        profile_photo = profile.get_photo()
+    user_email=user.get_email()
+    profile_name = profile.get_name()
+    profile_photo = profile.get_photo()
 
-        return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
-    except:
-        return Response({'error': 'Erro inesperado.'}, status=HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
+
