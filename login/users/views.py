@@ -1,7 +1,7 @@
 from rest_framework import generics
 from . import models
 from . import serializers
-
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -11,17 +11,31 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_500_INTERNAL_SERVER_ERROR
 )
-
+from rest_framework import status
 import requests
 from django.core.validators import validate_email
+from rest_framework.parsers import MultiPartParser, FormParser
+from cloudinary.templatetags import cloudinary
 
 class UserListView(generics.ListCreateAPIView):
     queryset = models.CustomUser.objects.all()
     serializer_class = serializers.UserSerializer
 
-class ProfileListView(generics.ListCreateAPIView):
-    queryset = models.Profile.objects.all()
+class ProfileListView(APIView):
+    parser_classes = (MultiPartParser, FormParser,)
     serializer_class = serializers.ProfileSerializer
+    def get(self, request, format=None):
+        imagens = models.Profile.objects.all()
+        serializer = serializers.ProfileSerializer(imagens, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["POST"])
 def get_name(request):
@@ -69,7 +83,7 @@ def update_profile(request):
 
     user_email=user.get_email()
     profile_name = profile.get_name()
-    profile_photo = profile.get_photo()
+    profile_photo = profile.get_photo().url
 
     return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
 
@@ -94,7 +108,7 @@ def get_profile(request):
     # Get email, name, photo from a certain user/profile
     user_email=user.get_email()
     profile_name = profile.get_name()
-    profile_photo = profile.get_photo()
+    profile_photo = profile.get_photo().url
 
     return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
 

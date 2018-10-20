@@ -9,4 +9,9 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Profile
-        fields = ('user', 'name', 'photo')
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super(ProfileSerializer, self).to_representation(instance)
+        representation['photo'] = instance.photo.url
+        return representation
