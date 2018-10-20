@@ -55,35 +55,47 @@ def update_profile(request):
     name = request.data.get('name')
     email = request.data.get('email')
     photo = request.data.get('photo')
-
-    if(user_id == None or name == None or photo == None):
-        return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
-
-    # verify email validation
-    try:
-        validate_email(email)
-    except:
-        return Response({'error': 'Email inválido.'}, status=HTTP_400_BAD_REQUEST)
-
+    
+    # Verify user
+    if(user_id == None or not user_id):
+        return Response({'error':'Usuário não identificado'},status=HTTP_400_BAD_REQUEST)
     # Retrieve user and profile data from database
     try:
         user = models.CustomUser.objects.get(id = user_id)
         profile = models.Profile.objects.get(user = user_id)
     except:
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
+
+    profile_name='unchanged'
+    profile_photo='unchanged'
+    user_email='unchanged'
+    # Set name if that is in response
+    if(name != None or name):
+        profile.set_name(name)
+        profile_name = profile.get_name()
+
+    if(photo != None or photo):
+        profile.set_photo(photo)
+        profile_photo = profile.get_photo()
+
+    # Set image if that is in response
+
+    if(photo != None or photo):
+        profile.set_photo(photo)
+
+    if(email != None or email):
+        try:
+            validate_email(email)
+        except:
+            return Response({'error': 'Email inválido.'}, status=HTTP_400_BAD_REQUEST)
+        # Set new email
+        try:
+            user.set_email(email)
+        except:
+            return Response({'error': 'Endereço de email já cadastrado'}, status=HTTP_400_BAD_REQUEST)
+        user_email=user.get_email()
     
-    # Set new name, email and photo
-    try:
-        user.set_email(email)
-    except:
-        return Response({'error': 'Endereço de email já cadastrado'}, status=HTTP_400_BAD_REQUEST)
-
-    profile.set_name(name)
-    profile.set_photo(photo)
-
-    user_email=user.get_email()
-    profile_name = profile.get_name()
-    profile_photo = profile.get_photo().url
+    
 
     return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
 
