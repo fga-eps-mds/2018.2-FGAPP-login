@@ -35,10 +35,16 @@ INSTALLED_APPS = [
 'allauth',
 'allauth.account',
 'rest_auth.registration',
-
+'cloudinary',
 'users',
 'api',
 ]
+
+cloudinary.config(
+    cloud_name="integraappfga",
+    api_key="373252117475163",
+    api_secret="sREbPYDojIEex1jTW1alVdljn3E"
+)
 
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
