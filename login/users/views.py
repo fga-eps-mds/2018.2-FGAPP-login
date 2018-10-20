@@ -74,14 +74,10 @@ def update_profile(request):
         profile.set_name(name)
         profile_name = profile.get_name()
 
-    if(photo != None or photo):
-        profile.set_photo(photo)
-        profile_photo = profile.get_photo()
-
     # Set image if that is in response
-
     if(photo != None or photo):
         profile.set_photo(photo)
+        profile_photo = profile.get_photo().url
 
     if(email != None or email):
         try:
