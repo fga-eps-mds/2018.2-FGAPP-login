@@ -5,6 +5,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.utils import six, timezone
 from django.core import validators
+from cloudinary.models import CloudinaryField
 
 class MyUserManager(BaseUserManager):
     """
@@ -71,7 +72,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True,)
     name = models.CharField(max_length=30, blank=True)
-    photo = models.CharField(max_length=300, blank=True)
+    photo = CloudinaryField('photo')
 
     def get_name(self):
         return self.name
