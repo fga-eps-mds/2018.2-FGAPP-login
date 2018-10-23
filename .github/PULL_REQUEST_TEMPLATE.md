@@ -5,7 +5,7 @@ Descrição simples e concisa de como o pr resolve um problema.
 soluciona issue #2
 
 **Caso issue esteja em outro repositorio**
-soluciona issue fga-eps-mds/2018.2-iFood#2
+soluciona issue fga-eps-mds/2018.2-Integra-Vendas#2
 
 Tarefas gerais realizadas
 * Tarefa 1
