@@ -35,3 +35,28 @@ def registration(request):
     except:
         return Response({'error': 'Erro interno de servidor'},
                                 status=HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(["POST"])
+def login(request):
+    email = request.data.get('username')
+    password = request.data.get('password')
+    request_json = {"username": email, "password": password}
+    try:
+        response = requests.post('http://'+settings.LOGIN_DEFAULT_DOMAIN + '/api/rest-auth/login/', json=request_json)
+        response_json = response.json()
+        #Verificação se existe perfil no usuário logado
+        if 'user' in response_json:
+            if 'pk' in response_json['user']:
+                user_id=response_json['user']['pk']
+                try:
+                    profile = Profile.objects.get(user=user_id)
+                except:
+                    user = CustomUser.objects.get(pk = user_id)
+                    profile = Profile(user=user, name='', photo='')
+                    profile.save()
+
+        return Response(data=response_json, status=response.status_code)
+
+    except:
+        return Response({'error': 'Erro interno de servidor'},
+                                status=HTTP_500_INTERNAL_SERVER_ERROR)
