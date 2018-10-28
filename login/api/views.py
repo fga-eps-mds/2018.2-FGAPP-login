@@ -42,7 +42,7 @@ def login(request):
     password = request.data.get('password')
     request_json = {"username": email, "password": password}
     try:
-        response = requests.post('http://'+settings.LOGIN_DEFAULT_DOMAIN + '/api/rest-auth/login/', json=request_json)
+        response = requests.post(settings.LOGIN_DEFAULT_DOMAIN + '/api/rest-auth/login/', json=request_json)
         response_json = response.json()
         #Verificação se existe perfil no usuário logado
         if 'user' in response_json:
@@ -55,6 +55,17 @@ def login(request):
                     profile = Profile(user=user, name='', photo='')
                     profile.save()
 
+        return Response(data=response_json, status=response.status_code)
+
+    except:
+        return Response({'error': 'Erro interno de servidor'},
+                                status=HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(["POST"])
+def logout(request):
+    try:
+        response = requests.post(settings.LOGIN_DEFAULT_DOMAIN + '/api/rest-auth/logout/')
+        response_json = response.json()
         return Response(data=response_json, status=response.status_code)
 
     except:
