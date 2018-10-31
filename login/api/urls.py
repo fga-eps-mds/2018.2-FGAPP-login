@@ -1,13 +1,15 @@
 from django.urls import include, path
-from .views import registration
-from .views import login
-from .views import logout
+from django.views.generic import TemplateView
+from django.conf.urls import url
+
+from .views import RegisterView, VerifyEmailView
+
 urlpatterns = [
     path('users/', include('users.urls')),
-    path('rest-auth/', include('rest_auth.urls')),
-    path('rest-auth/registration/', include('rest_auth.registration.urls')),
-    path('registration/', registration),
-    path('login/', login),
-    path('logout/', logout),
+    path('', include('rest_auth.urls')),
+    url(r'^registration/$', RegisterView.as_view(), name='rest_register'),
+    url(r'^registration/verify-email/$', VerifyEmailView.as_view(), name='rest_verify_email'),
+    url(r'^registration/account-confirm-email/(?P<key>[-:\w]+)/$', TemplateView.as_view(),
+        name='account_confirm_email'),
 
 ]
