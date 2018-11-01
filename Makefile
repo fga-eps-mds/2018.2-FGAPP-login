@@ -1,9 +1,10 @@
 default:
-	docker network create api-backend || true
-	docker-compose up
+	make build
+	make run
 
 run:
-	echo NEED_UPDATE
+	docker network create api-backend || true
+	docker-compose up
 
 build:
 	docker-compose build
@@ -16,3 +17,6 @@ test:
 
 production:
 	docker-compose -f docker-compose-production.yml up
+
+down:
+	docker-compose down
