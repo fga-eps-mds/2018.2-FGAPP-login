@@ -38,10 +38,16 @@ INSTALLED_APPS = [
 'allauth',
 'allauth.account',
 'rest_auth.registration',
-
+'cloudinary',
 'users',
 'api',
 ]
+
+cloudinary.config(
+    cloud_name=os.environ.get('CDN_CLOUD_NAME'),
+    api_key=os.environ.get('CDN_API_KEY'),
+    api_secret=os.environ.get('CDN_API_SECRET')
+)
 
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
