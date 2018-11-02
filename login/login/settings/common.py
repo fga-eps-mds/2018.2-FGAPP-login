@@ -44,16 +44,16 @@ INSTALLED_APPS = [
 ]
 
 cloudinary.config(
-    cloud_name=os.environ.get('CDN_CLOUD_NAME'),
-    api_key=os.environ.get('CDN_API_KEY'),
-    api_secret=os.environ.get('CDN_API_SECRET')
+    cloud_name=config('CDN_CLOUD_NAME'),
+    api_key=config('CDN_API_KEY'),
+    api_secret=config('CDN_API_SECRET')
 )
 
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'integraappfga@gmail.com'
-EMAIL_HOST_PASSWORD = 'integrandoconhecimento'
+EMAIL_HOST_PASSWORD = '@rredondaPIpra5.engenharia!'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
