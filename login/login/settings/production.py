@@ -15,3 +15,10 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASS')
     }
 }
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'integraappfga@gmail.com'
+EMAIL_HOST_PASSWORD = config('SECURITY_EMAIL_PASSWORD', default='passwordShouldBeIn.Env')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
