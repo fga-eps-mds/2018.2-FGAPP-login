@@ -1,0 +1,2 @@
+release: python manage.py makemigrations && python manage.py migrate --noinput
+web: gunicorn login.wsgi --log-file -
