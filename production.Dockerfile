@@ -1,9 +1,8 @@
 FROM python:3.5.6-slim-stretch
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /code
-
-ADD ./login /code
+ADD . /code
+WORKDIR /code/login
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements/prod.txt

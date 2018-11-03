@@ -15,10 +15,10 @@ from decouple import config
 import cloudinary  # cloudinary
 import cloudinary.uploader  # cloudinary
 import cloudinary.api
+from login.file_helper import file_get_contents
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 REST_USE_JWT = True
 
@@ -153,4 +153,11 @@ APPEND_SLASH=False
 
 STATIC_URL = '/static/'
 
+VERSION = config('VERSION', default='0.0')
 LOGIN_DEFAULT_DOMAIN = config('LOGIN_DOMAIN', default='http://localhost:8000')
+
+if VERSION == "0.0":
+    try:
+        VERSION = file_get_contents("../VERSION")
+    except:
+        VERSION = "-1"
