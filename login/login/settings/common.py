@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 from decouple import config
+import cloudinary  # cloudinary
+import cloudinary.uploader  # cloudinary
+import cloudinary.api
 from login.file_helper import file_get_contents
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -35,10 +38,24 @@ INSTALLED_APPS = [
 'allauth',
 'allauth.account',
 'rest_auth.registration',
-
+'cloudinary',
 'users',
 'api',
 ]
+
+cloudinary.config(
+    cloud_name=config('CDN_CLOUD_NAME'),
+    api_key=config('CDN_API_KEY'),
+    api_secret=config('CDN_API_SECRET')
+)
+
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'integraappfga@gmail.com'
+EMAIL_HOST_PASSWORD = config('SECURITY_EMAIL_PASSWORD', default='passwordShouldBeIn.Env')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SITE_ID = 1
 

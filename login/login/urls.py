@@ -9,6 +9,7 @@ from django.contrib.sites.models import Site
 from login.settings.development import LOGIN_DEFAULT_DOMAIN
 from .views import status
 
+
 urlpatterns = [
     path('', status),
     path('admin/', admin.site.urls),

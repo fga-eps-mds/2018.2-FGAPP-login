@@ -5,6 +5,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.utils import six, timezone
 from django.core import validators
+from cloudinary.models import CloudinaryField
 
 class MyUserManager(BaseUserManager):
     """
@@ -27,7 +28,6 @@ class MyUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
@@ -61,8 +61,29 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-    def get_full_name(self):
-        return self.first_name
-
-    def get_short_name(self):
+    def get_email(self):
         return self.email
+
+    def set_email(self, email):
+        self.email = email
+        self.username = email
+        self.save()
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True,)
+    name = models.CharField(max_length=30, blank=True)
+    photo = CloudinaryField('photo')
+
+    def get_name(self):
+        return self.name
+
+    def set_name(self, name):
+        self.name = name
+        self.save()
+
+    def get_photo(self):
+        return self.photo
+
+    def set_photo(self, photo):
+        self.photo = photo
+        self.save()
