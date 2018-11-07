@@ -21,3 +21,8 @@ production:
 
 down:
 	docker-compose down
+
+check-service:
+	make &
+	sleep 60
+	docker inspect -f '{{.State.Running}}' ${container}

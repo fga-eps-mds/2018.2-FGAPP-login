@@ -12,10 +12,21 @@ virtualenv:
   system_site_packages: true
 
 stages:
+  - check-container
   - test
 
 jobs:
   include:
-    - stage: "Tests"
+    - stage: check-container
+      sudo: required
+      services:
+        - docker
+      name: "Checking Container Run"
+      script:
+        - make check-service container=login-microservice
+
+    - stage: test
       name: "Unit Tests"
       script: sh run-tests.sh
+
+    
