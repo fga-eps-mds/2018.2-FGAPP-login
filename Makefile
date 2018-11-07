@@ -22,7 +22,12 @@ production:
 down:
 	docker-compose down
 
-check-service:
+check-docker-production:
+	make production &
+	sleep 80
+	bash -c "[ -z "$(docker ps -q -f status=ok)" ] && exit 1"
+
+check-docker-dev:
 	make &
-	sleep 40
+	sleep 60
 	bash -c "[ -z "$(docker ps -q -f status=ok)" ] && exit 1"
