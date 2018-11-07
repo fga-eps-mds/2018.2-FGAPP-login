@@ -23,7 +23,7 @@ jobs:
         - docker
       name: "Checking Container Run"
       script:
-        - make check-service container=login-microservice
+        - make check-service
 
     - stage: test
       name: "Unit Tests"

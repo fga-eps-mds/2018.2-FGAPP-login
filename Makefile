@@ -24,5 +24,5 @@ down:
 
 check-service:
 	make &
-	sleep 60
-	docker inspect -f '{{.State.Running}}' ${container}
+	sleep 40
+	bash -c "[ -z "$(docker ps -q -f status=ok)" ] && exit 1"
