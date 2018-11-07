@@ -24,10 +24,12 @@ down:
 
 check-docker-production:
 	make production &
-	sleep 80
-	bash -c "[ -z "$(docker ps -q -f status=ok)" ] && exit 1"
+	sleep 60
+	bash check-container.sh
+	docker-compose -f docker-compose-production.yml down
 
 check-docker-dev:
 	make &
 	sleep 60
-	bash -c "[ -z "$(docker ps -q -f status=ok)" ] && exit 1"
+	bash check-container.sh
+	make down
