@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.6'
 
 services:
   db:
@@ -12,6 +12,8 @@ services:
       - 8000:8000
     depends_on:
       - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=login.settings.production
 
 volumes:
   postgres_data:
