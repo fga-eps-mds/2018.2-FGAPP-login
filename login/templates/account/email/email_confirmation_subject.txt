@@ -1,4 +1,1 @@
-{% load i18n %}
-{% autoescape off %}
-{% blocktrans %}Integra - Confirmação de email{% endblocktrans %}
-{% endautoescape %}
+Confirmação de email
