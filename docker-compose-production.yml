@@ -7,11 +7,13 @@ services:
     build:
       context: .
       dockerfile: production.Dockerfile
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    entrypoint: bash -c "bash check-db-service.sh && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports:
       - 8000:8000
     depends_on:
       - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=login.settings.production
 
 volumes:
   postgres_data:

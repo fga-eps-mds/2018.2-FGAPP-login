@@ -1,18 +1,20 @@
 from login.settings.common import *
+from decouple import config
 
 DEBUG = False
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default='9_bjt+3r7c7&*^3)0jnga)b5f!8-)0+^j$bu-!bjlrcp2j$%(%')
 
-ALLOWED_HOSTS = [os.environ.get('HOST')]
+ALLOWED_HOSTS = [config('HOST', default='*')]
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'HOST': os.environ.get('DB_HOST'), 
-        'PORT': os.environ.get('DB_PORT'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASS')
+        'NAME': config('DB_NAME', default='postgres'),
+        'HOST': config('DB_HOST', default='db'), 
+        'PORT': config('DB_PORT', default='5432'),
+        'USER': config('DB_USER', default='postgres'),
+        'PASSWORD': config('DB_PASS', default='')
     }
 }
 
