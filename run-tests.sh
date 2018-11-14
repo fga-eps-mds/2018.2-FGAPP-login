@@ -1,3 +1,5 @@
+set -e
+
 cd login
 pip install -r requirements/dev.txt
 python manage.py makemigrations
