@@ -1,0 +1,13 @@
+{% load account %}
+{% user_display user as user_display %}
+{% load i18n %}{% autoescape off %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+Você está recebendo este e-mail porque solicitou a criação de conta no aplicativo Integra.
+
+Caso não tenha solicitado, por favor entrar em contato conosco.
+{% endblocktrans %}{% endautoescape %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+Obrigado por usar nosso app!
+
+Equipe Integra.
+{% endblocktrans %}

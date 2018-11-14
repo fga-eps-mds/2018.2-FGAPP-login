@@ -11,7 +11,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': config('DB_NAME', default='postgres'),
-        'HOST': config('DB_HOST', default='db'), 
+        'HOST': config('DB_HOST', default='db'),
         'PORT': config('DB_PORT', default='5432'),
         'USER': config('DB_USER', default='postgres'),
         'PASSWORD': config('DB_PASS', default='')
@@ -24,3 +24,4 @@ EMAIL_HOST_USER = 'integraappfga@gmail.com'
 EMAIL_HOST_PASSWORD = config('SECURITY_EMAIL_PASSWORD', default='passwordShouldBeIn.Env')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+ACCOUNT_EMAIL_SUBJECT_PREFIX = 'Integra - '
