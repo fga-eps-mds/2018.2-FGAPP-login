@@ -92,17 +92,16 @@ def set_photo(profile, photo):
 
 def set_email(user, email):
     user_email = 'unchanged'
-    if(email != None or email):
-        try:
-            validate_email(email)
-        except:
-            return 'Email inválido'
-        # Set new email
-        try:
-            user.set_email(email)
-        except:
-            return 'Endereço de email já cadastrado'
-        user_email = user.get_email()
+    try:
+        validate_email(email)
+    except:
+        return 'Email inválido'
+    # Set new email
+    try:
+        user.set_email(email)
+    except:
+        return 'Endereço de email já cadastrado'
+    user_email = user.get_email()
     return user_email
 
 @api_view(["POST"])
