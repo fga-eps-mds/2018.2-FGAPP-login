@@ -55,7 +55,6 @@ def update_profile(request):
     name = request.data.get('name')
     email = request.data.get('email')
     photo = request.data.get('photo')
-
     # Retrieve user and profile data from database
     try:
         user = models.CustomUser.objects.get(id = user_id)
@@ -75,7 +74,7 @@ def update_profile(request):
     if (user_email == 'Endereço de email já cadastrado'):
         return Response({'error': 'Endereço de email já cadastrado'}, status=HTTP_400_BAD_REQUEST)
 
-    return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
+    return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo.url}, status=HTTP_200_OK)
 
 def set_name(profile, name):
     if(name != None or name):
@@ -89,7 +88,7 @@ def set_photo(profile, photo):
         profile.set_photo(photo)
         profile_photo = profile.get_photo()
         return profile_photo
-    return 'unchanged'
+    return profile.get_photo()
 
 def set_email(user, email):
     if(email != None or email):

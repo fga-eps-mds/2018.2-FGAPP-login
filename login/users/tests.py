@@ -124,7 +124,7 @@ class CheckUserAPIViewsTest(APITestCase):
         self.assertEqual(response_1.json(), {'name':'Test Name', 'email': 'teste3@teste.com', 'photo':'https://i.ytimg.com/vi/pvv1F8iKmMM/maxresdefault.jpg'})
 
         #  if no user_id in request
-        request_2 = {'name': 'Test Name', 'email': 'teste3@teste.com', 'photo':'https://i.ytimg.com/vi/pvv1F8iKmMM/maxresdefault.jpg'}
+        request_2 = {'name': 'Test Name', 'email': 'teste3@teste.com', 'photo': 'https://i.ytimg.com/vi/pvv1F8iKmMM/maxresdefault.jpg'}
         response_2 = self.client.post('/api/users/update_profile/', request_2)
         self.assertEqual(response_2.status_code, 400)
         self.assertEqual(response_2.json(), {'error': 'Usuário não existe.'})
