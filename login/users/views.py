@@ -63,37 +63,49 @@ def update_profile(request):
     except:
         return Response({'error': 'Usuário não existe.'}, status=HTTP_400_BAD_REQUEST)
 
-    profile_name='unchanged'
-    profile_photo='unchanged'
-    user_email='unchanged'
-    # Set name if that is in response
+    profile_name = set_name(profile, name)
+
+    profile_photo = set_photo(profile, photo)
+
+    user_email = set_email(user, email)
+
+    if (user_email == 'Email inválido'):
+        return Response({'error': 'Email inválido.'}, status=HTTP_400_BAD_REQUEST)
+
+    if (user_email == 'Endereço de email já cadastrado'):
+        return Response({'error': 'Endereço de email já cadastrado'}, status=HTTP_400_BAD_REQUEST)
+
+    return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
+
+def set_name(profile, name):
     if(name != None or name):
         profile.set_name(name)
         profile_name = profile.get_name()
+        return profile_name
+    return 'unchanged'
 
-    # Set image if that is in response
+def set_photo(profile, photo):
     if(photo != None or photo):
         profile.set_photo(photo)
-        profile_photo = profile.get_photo().url
+        profile_photo = profile.get_photo()
+        return profile_photo
+    return 'unchanged'
 
+def set_email(user, email):
     if(email != None or email):
         try:
             validate_email(email)
         except:
-            return Response({'error': 'Email inválido.'}, status=HTTP_400_BAD_REQUEST)
+            return 'Email inválido'
+            # return Response({'error': 'Email inválido.'}, status=HTTP_400_BAD_REQUEST)
         # Set new email
         try:
             user.set_email(email)
         except:
-            return Response({'error': 'Endereço de email já cadastrado'}, status=HTTP_400_BAD_REQUEST)
-        user_email=user.get_email()
-
-
-
-    return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
-
-
-
+            return 'Endereço de email já cadastrado'
+            # return Response({'error': 'Endereço de email já cadastrado'}, status=HTTP_400_BAD_REQUEST)
+        return user.get_email()
+    return 'unchanged'
 
 @api_view(["POST"])
 def get_profile(request):
@@ -103,7 +115,6 @@ def get_profile(request):
     try:
         profile = models.Profile.objects.get(user = user_id)
         user = models.CustomUser.objects.get(id = user_id)
-
     except:
         return Response({'error': 'Usuário inválido.'}, status=HTTP_400_BAD_REQUEST)
 
