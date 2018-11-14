@@ -28,7 +28,7 @@ class ProfileListView(APIView):
         imagens = models.Profile.objects.all()
         serializer = serializers.ProfileSerializer(imagens, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-    
+
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -55,10 +55,7 @@ def update_profile(request):
     name = request.data.get('name')
     email = request.data.get('email')
     photo = request.data.get('photo')
-    
-    # Verify user
-    if(user_id == None or not user_id):
-        return Response({'error':'Usuário não identificado'},status=HTTP_400_BAD_REQUEST)
+
     # Retrieve user and profile data from database
     try:
         user = models.CustomUser.objects.get(id = user_id)
@@ -90,26 +87,23 @@ def update_profile(request):
         except:
             return Response({'error': 'Endereço de email já cadastrado'}, status=HTTP_400_BAD_REQUEST)
         user_email=user.get_email()
-    
-    
+
+
 
     return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
 
 
-    
+
 
 @api_view(["POST"])
 def get_profile(request):
     user_id = request.data.get('user_id')
 
-    # Bad request if user_id is not defined
-    if(user_id == None or not user_id):
-        return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
-    
     # Request user and profile according to user_id
     try:
-        user = models.CustomUser.objects.get(id = user_id)
         profile = models.Profile.objects.get(user = user_id)
+        user = models.CustomUser.objects.get(id = user_id)
+
     except:
         return Response({'error': 'Usuário inválido.'}, status=HTTP_400_BAD_REQUEST)
 
@@ -119,4 +113,3 @@ def get_profile(request):
     profile_photo = profile.get_photo().url
 
     return Response(data={'name': profile_name, 'email': user_email, 'photo': profile_photo}, status=HTTP_200_OK)
-
