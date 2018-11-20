@@ -66,7 +66,10 @@ def update_profile(request):
 
     profile_photo = set_photo(profile, photo)
 
-    user_email = set_email(user, email)
+    if(email != None):
+        user_email = set_email(user, email)
+    else:
+        user_email = 'unchanged'
 
     if (user_email == 'Email inválido'):
         return Response({'error': 'Email inválido.'}, status=HTTP_400_BAD_REQUEST)
