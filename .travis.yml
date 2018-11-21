@@ -42,5 +42,5 @@ jobs:
       script:
         - . ./heroku-helper.sh
         - updateVersion
-        - loginHeroku $EMAIL_HEROKU $HEROKU_TOKEN
+        - loginHeroku $EMAIL_HEROKU $HEROKU_DEV_KEY
         - deployMaster $HEROKU_APP login
